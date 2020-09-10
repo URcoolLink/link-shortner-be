@@ -33,4 +33,21 @@ describe('link-shortener routes', () => {
 
     expect(response.redirect).toBeTruthy;
   });
+
+  it('updates the shortened URL with a new short URL using a put route', async() => {
+    const newLink = await Link.insert({
+      url: 'https://inspirobot.me/'
+    }, ['apple']);
+
+    const response = await request(app)
+      .patch(`/api/v1/links/${newLink.id}`)
+      
+
+    expect(response.body).toEqual({
+      id: expect.any(String),
+      url: 'https://inspirobot.me/',
+      cool: expect.any(String)
+    });
+  });
+
 });
