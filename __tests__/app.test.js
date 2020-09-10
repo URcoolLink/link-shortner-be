@@ -40,7 +40,7 @@ describe('link-shortener routes', () => {
     }, ['apple']);
 
     const response = await request(app)
-      .patch(`/api/v1/links/${newLink.id}`)
+      .patch(`/api/v1/links/${newLink.id}`);
       
 
     expect(response.body).toEqual({
@@ -50,4 +50,20 @@ describe('link-shortener routes', () => {
     });
   });
 
+  it('deletes a URL using DELETE route', async() => {
+    const newLink = await Link.insert({
+      url: 'https://inspirobot.me/'
+    }, ['apple']);
+
+    const response = await request(app)
+      .delete(`/api/v1/links/${newLink.id}`);
+
+    expect(response.body).toEqual({
+      id: expect.any(String),
+      url: 'https://inspirobot.me/',
+      cool: expect.any(String)
+    });
+  });
 });
+
+
