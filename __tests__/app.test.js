@@ -34,6 +34,40 @@ describe('link-shortener routes', () => {
     expect(response.redirect).toBeTruthy;
   });
 
+  it('gets all the links in the database using the GET route', async() => {
+    await Promise.all([
+      Link.insert({
+        url: 'https://inspirobot.me/'
+      }, ['apple']),
+      Link.insert({
+        url: 'https://twitter.com/home'
+      }, ['banana']),
+      Link.insert({
+        url: 'https://github.com/',
+      }, ['pineapple'])
+    ]);
+
+    const response = await request(app)
+      .get('/api/v1/links');
+    
+    expect(response.body).toEqual(expect.arrayContaining([
+      {
+        id: expect.any(String),
+        url: 'https://inspirobot.me/',
+        cool: expect.any(String)
+      }, {
+        id: expect.any(String),
+        url: 'https://twitter.com/home',
+        cool: expect.any(String)
+      }, {
+        id: expect.any(String),
+
+        url: 'https://github.com/',
+        cool: expect.any(String)
+      }
+    ]));
+  });
+
   it('updates the shortened URL with a new short URL using a put route', async() => {
     const newLink = await Link.insert({
       url: 'https://inspirobot.me/'
