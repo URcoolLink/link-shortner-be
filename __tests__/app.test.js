@@ -35,7 +35,7 @@ describe('link-shortener routes', () => {
   });
 
   it('gets all the links in the database using the GET route', async() => {
-    const allLinks = await Promise.all([
+    await Promise.all([
       Link.insert({
         url: 'https://inspirobot.me/'
       }, ['apple']),
